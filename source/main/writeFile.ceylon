@@ -8,7 +8,7 @@ import ceylon.file {
 "Run the module `writeFile`."
 
 
-void writeFileXml(String filePath,String text) {
+void writeFileVM(String filePath,String text) {
 
     Resource resource = parsePath(filePath).resource;
     if (is File|Nil resource) {

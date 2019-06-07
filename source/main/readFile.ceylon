@@ -21,7 +21,7 @@ shared void readFile(String filePath) {
 
         variable String textOfFile=""; //fainel result
         variable String tokens="";
-        variable String pathForXmlFile ="";
+        variable String pathForVMlFile ="";
         variable String dict = resource.directory.string;
 
         value index =resource.name.indexOf(".");
@@ -40,15 +40,11 @@ shared void readFile(String filePath) {
         tokens += "</tokens>";
 
 
-        //Print a XML file for Tokens
-        pathForXmlFile = changeNameOfSuffix(resource.name,dict,true);
-        writeFileXml(pathForXmlFile,tokens);
-
         //Parser
         textOfFile = makeParsering(tokens);
         //Print a Tree
-        pathForXmlFile = changeNameOfSuffix(resource.name,dict,false);
-        writeFileXml(pathForXmlFile,textOfFile);
+        pathForVMlFile = changeNameOfSuffix(resource.name,dict,false);
+        writeFileVM(pathForVMlFile,textOfFile);
         textOfFile ="";
     }
 
@@ -60,11 +56,7 @@ String changeNameOfSuffix(String name,String dict,Boolean isTokens){
     value index =name.indexOf(".");
     variable String newName = name.substring(0,index);
 
-    if(!isTokens) {
-        newName+= "ParserResult.xml";
-        return dict + "\\" + newName;
-    }
-    newName+= "TokeneizerResult.xml";
+    newName+= ".vm";
     return dict+"\\"  + newName;
 }
 
