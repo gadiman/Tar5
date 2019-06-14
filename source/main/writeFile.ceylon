@@ -14,7 +14,7 @@ void writeFileVM(String filePath,String text) {
     if (is File|Nil resource) {
         File file = createFileIfNil(resource);
 
-        try (appender = file.Appender()) { //Appender not remove the exists text
+        try (appender = file.Overwriter()) { //Appender not remove the exists text
             appender.write(text);
         }
     }
