@@ -77,6 +77,7 @@ class SymbolTable() {
         }
         else
         {
+
             value check_class= class_scope.get(name);
             if(exists identifier_class=check_class)
             {
@@ -103,6 +104,7 @@ class SymbolTable() {
         }
         else
         {
+
             value check_class= class_scope.get(name);
             if(exists identifier_class=check_class)
             {
