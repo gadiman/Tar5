@@ -17,4 +17,5 @@ shared void main() {
     openDict("D:/CeylonExercises/project 11/Seven");
     openDict("D:/CeylonExercises/project 11/Square");
 
+
 }
