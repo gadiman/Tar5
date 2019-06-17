@@ -217,7 +217,7 @@ void letStatementFunc(LinkedList<String> tokens) {
         expressionFunc(tokens);
         currTok++; // for ']'
         result += "push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string + "\n";
-        print(symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
+        print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
 
 
         result += "add\n";
@@ -315,7 +315,7 @@ void doStatementFunc(LinkedList<String> tokens) {
 
         if(symbolTable.kindOf(varName) != "None"){
             result += "push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string + "\n";
-            print(symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
+            print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
             varName = symbolTable.typeOf(varName);
             numOfList++;
         }
@@ -492,7 +492,7 @@ void termFunc(LinkedList<String> tokens) {
         currTok++; // for']'
 
         result +="push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string +"\n";
-        print(symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
+        print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
         result += "add\n";
         result += "pop pointer 1\n";
         result += "push that 0\n";
@@ -519,7 +519,7 @@ void termFunc(LinkedList<String> tokens) {
 
         if(symbolTable.kindOf(varName) != "None"){
             result += "push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string + "\n";
-            print(symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
+            print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
             varName = symbolTable.typeOf(varName);
             numOfList++;
         }
@@ -530,7 +530,7 @@ void termFunc(LinkedList<String> tokens) {
     }
     else{
         result += "push "+symbolTable.kindOf(cleanTok(tokens.get(currTok)))+" "+symbolTable.indexOf(cleanTok(tokens.get(currTok))).string + "\n";
-        print((cleanTok(tokens.get(currTok)))+" "+symbolTable.indexOf(cleanTok(tokens.get(currTok))).string);
+        print(  (cleanTok(tokens.get(currTok))) + " " + symbolTable.indexOf(cleanTok(tokens.get(currTok))).string);
         currTok++; // for var name
     }
 }
