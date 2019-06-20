@@ -45,9 +45,7 @@ class SymbolTable() {
 
     shared String kindOf ( String name ){
         value check_sub = sub_routine.get(name);
-        print(name);
 
-        print(check_sub);
         if(exists identifier_sub=check_sub){
             value id_sub =  identifier_sub.split();
             String? kind_id = id_sub.rest.first;
@@ -56,7 +54,6 @@ class SymbolTable() {
         }
         else{
             value check_class= class_scope.get(name);
-            print(check_class);
             if(exists identifier_class = check_class)
             {
                 value id_class =  identifier_class.split();
@@ -70,7 +67,6 @@ class SymbolTable() {
 
     shared String typeOf ( String name ){
         value check_sub= sub_routine.get(name);
-        print(check_sub);
         if(exists identifier_sub=check_sub)
         {
             value id_sub =  identifier_sub.split();
@@ -82,7 +78,6 @@ class SymbolTable() {
         else
         {
             value check_class= class_scope.get(name);
-            print(check_class);
             if(exists identifier_class=check_class)
             {
                 value id_class =  identifier_class.split();
@@ -92,7 +87,6 @@ class SymbolTable() {
             }
         }
 
-        print(name);
         return "None";
     }
 
