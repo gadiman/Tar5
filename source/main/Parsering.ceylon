@@ -12,8 +12,7 @@ variable Integer numOfFields = 0;
 variable Integer numOfIF = 0;
 variable Integer numOfWhile = 0;
 variable Integer numOfList = 0;
-variable Boolean isMethod = false;
-variable Boolean isConstructor = false;
+variable String tempTok = "";
 variable String subName = "";
 variable String className = "";
 
@@ -71,10 +70,7 @@ void classFun (LinkedList<String> tokens){
         if(cleanTok(tokens.get(currTok)) == "method"){
             symbolTable.define("this", className ,"arg");
         }
-
         subrotineDecFun(tokens);
-
-
     }
 
 
@@ -129,12 +125,7 @@ void parameterListFunc(LinkedList<String> tokens){
 
 void subrotineDecFun (LinkedList<String> tokens) {
 
-    if(cleanTok(tokens.get(currTok)) == "method"){
-        isMethod = true;
-    }
-    else if (cleanTok(tokens.get(currTok)) == "constructor"){
-        isConstructor = true;
-    }
+    tempTok=tokens.get(currTok);
 
     currTok++; // "constructor" or "method"
     currTok++; //return type;
@@ -155,11 +146,11 @@ void subrutinBodyFunc(LinkedList<String> tokens){
     }
     result += "function " + className+ "."+ subName + " "+ symbolTable.varCount().string + "\n";
 
-    if(isMethod){
+    if(tempTok.contains("method")){
         result += "push argument 0\n";
         result += "pop pointer 0\n";
     }
-    else if(isConstructor){
+    else if(tempTok.contains("constructor")){
         result += "push constant "+ numOfFields.string+ "\n";
         result += "call Memory.alloc 1\n";
         result += "pop pointer 0\n";
@@ -211,15 +202,14 @@ void letStatementFunc(LinkedList<String> tokens) {
     variable String varName;
     currTok++; //for keyword "let"
     varName = cleanTok(tokens.get(currTok++));
+    //
     if(cleanTok(tokens.get(currTok)) =="["){
         isArray = true;
         currTok++; //for '['
         expressionFunc(tokens);
         currTok++; // for ']'
         result += "push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string + "\n";
-        print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
-
-
+        //(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
         result += "add\n";
     }
     currTok++; // for '='
@@ -229,7 +219,9 @@ void letStatementFunc(LinkedList<String> tokens) {
         result += "pop pointer 1\n";
         result += "push temp 0\n";
         result += "pop that 0\n";
-    }else{
+    }
+    else
+    {
         result += "pop "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string +"\n";
         //print(symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
 
@@ -239,26 +231,25 @@ void letStatementFunc(LinkedList<String> tokens) {
 }
 
 void ifStatementFunc(LinkedList<String> tokens) {
-
-    numOfIF++;
+    variable Integer countIf=++numOfIF;
     currTok++; // for keyword "if"
     currTok++; // for '('
     expressionFunc(tokens);
     currTok++; // for ')'
 
-    result += "if-goto IF_TRUE" + numOfIF.string + "\n";
-    result += "if-goto IF_FALSE" + numOfIF.string + "\n";
-    result += "label IF_TRUE" + numOfIF.string + "\n";
+    result += "if-goto IF_TRUE" + countIf.string + "\n";
+    result += "if-goto IF_FALSE" + countIf.string + "\n";
+    result += "label IF_TRUE" + countIf.string + "\n";
 
     currTok++; // for '{'
     statementsFunc(tokens);
     currTok++; // for '}'
 
     if(cleanTok(tokens.get(currTok)) == "else"){
-        result += "goto IF_END"+numOfIF.string + "\n";
+        result += "goto IF_END"+countIf.string + "\n";
     }
 
-    result += "label IF_FALSE"+numOfIF.string + "\n";
+    result += "label IF_FALSE"+countIf.string + "\n";
 
     if(cleanTok(tokens.get(currTok)) == "else"){
         currTok++; // for keyword "else"
@@ -266,7 +257,7 @@ void ifStatementFunc(LinkedList<String> tokens) {
         statementsFunc(tokens);
         currTok++; // for "}"
 
-        result += "label IF_END"+numOfIF.string + "\n";
+        result += "label IF_END"+countIf.string + "\n";
 
     }
 
@@ -315,7 +306,7 @@ void doStatementFunc(LinkedList<String> tokens) {
 
         if(symbolTable.kindOf(varName) != "None"){
             result += "push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string + "\n";
-            print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
+            //(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
             varName = symbolTable.typeOf(varName);
             numOfList++;
         }
@@ -326,6 +317,7 @@ void doStatementFunc(LinkedList<String> tokens) {
     }
     currTok++; //for ';'
 }
+
 
 void returnStatementFunc(LinkedList<String> tokens) {
     currTok++; // for keyword "return"
@@ -492,7 +484,6 @@ void termFunc(LinkedList<String> tokens) {
         currTok++; // for']'
 
         result +="push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string +"\n";
-        print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
         result += "add\n";
         result += "pop pointer 1\n";
         result += "push that 0\n";
@@ -519,7 +510,7 @@ void termFunc(LinkedList<String> tokens) {
 
         if(symbolTable.kindOf(varName) != "None"){
             result += "push "+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string + "\n";
-            print(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
+            //(varName+symbolTable.kindOf(varName)+" "+symbolTable.indexOf(varName).string);
             varName = symbolTable.typeOf(varName);
             numOfList++;
         }
@@ -530,7 +521,7 @@ void termFunc(LinkedList<String> tokens) {
     }
     else{
         result += "push "+symbolTable.kindOf(cleanTok(tokens.get(currTok)))+" "+symbolTable.indexOf(cleanTok(tokens.get(currTok))).string + "\n";
-        print(  (cleanTok(tokens.get(currTok))) + " " + symbolTable.indexOf(cleanTok(tokens.get(currTok))).string);
+        //(  (cleanTok(tokens.get(currTok))) + " " + symbolTable.indexOf(cleanTok(tokens.get(currTok))).string);
         currTok++; // for var name
     }
 }
