@@ -34,6 +34,11 @@ shared String  parsering(String tokens) {
 
 
     currTok=1;
+    numOfFields = 0;
+    numOfIF = 0;
+    numOfWhile = 0;
+    numOfList = 0;
+    symbolTable.reset();
     classFun(arrayOfTokens);
     return result;
 

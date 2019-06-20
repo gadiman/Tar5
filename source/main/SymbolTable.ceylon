@@ -11,6 +11,14 @@ class SymbolTable() {
     value sub_routine=HashMap<String,String>();
 
 
+    shared void reset() {
+        index_of_static = 0;
+         index_of_field = 0;
+         index_of_var = 0;
+         index_of_arg = 0;
+    }
+
+
     shared Integer varCount(){
         return index_of_var ;
     }
